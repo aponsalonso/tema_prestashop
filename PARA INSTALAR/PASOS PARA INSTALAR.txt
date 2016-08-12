@@ -1,0 +1,2 @@
+1. Copiar el fichero FrontController.php en /raizdelproyecto/classes/controller y reemplazar
+2. Borrar los temporales del smarty: Eliminar el contenido de las carpetas /raizdelproyecto/cache/smarty/cache y /raizdelproyecto/cache/smarty/compile
