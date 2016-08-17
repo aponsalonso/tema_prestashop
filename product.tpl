@@ -163,12 +163,12 @@
 							<li>
 
 
-		<span style="float: left; width:40px;"><p class="buttons_bottom_block no-print">
-			<a id="wishlist_button_nopop" href="#" onclick="WishlistCart('wishlist_block_list', 'add', '3', $('#idCombination').val(), document.getElementById('quantity_wanted').value); return false;" rel="nofollow" title="Add to my wishlist">
-				<img class="social2" src="{$img_dir}/social2.png" />
-			</a>
-		</p>
-		</span>
+								<span style="float: left; width:40px;"><p class="buttons_bottom_block no-print">
+									<a id="wishlist_button_nopop" href="#" onclick="WishlistCart('wishlist_block_list', 'add', '3', $('#idCombination').val(), document.getElementById('quantity_wanted').value); return false;" rel="nofollow" title="Add to my wishlist">
+										<img class="" src="{$img_dir}/social2.png" />
+									</a>
+								</p>
+								</span>
 
 
 							</li>
@@ -593,7 +593,7 @@
 		{if isset($packItems)==null && $packItems|@count > 0}
 		<section id="blockpack">
 			<h3 class="page-product-heading">{l s='Pack content'}</h3>
-			{include file="$tpl_dir./product-list.tpl" products=$packItems}
+			{print_r($packItems)}
 		</section>
 		{/if}
 		<!--HOOK_PRODUCT_TAB -->

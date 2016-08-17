@@ -22,7 +22,6 @@
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 *}
-
 {if $page_name =='index'}
 	{if $cookie->isLogged()}
 		{if isset($products) && $products}
@@ -1158,7 +1157,7 @@
 						<div class="right-block" style="border: 1px solid black;border-radius: 20px;min-height: 85px; width:92%;">
 						    <h5 itemprop="name">
 						        <a class="product-name"
-						           href="{$product.link|escape:'html':'UTF-8'}"
+						           href="{$base_uri}module/marketplace/editprofile?i={$seller.id_customer}&j={$seller.id}"
 						           title="{$seller.shop_name}" itemprop="url"
 						           style="font-weight: bold;">
 						            {$seller.shop_name}
@@ -1182,76 +1181,70 @@
 						                                    </p>
 															</span>
 						        </div>
-						        <div class="r_product_share_menu col-sm-2">
+                                <div class="r_product_share_menu col-sm-2">
 
-						            <div class="sf-contener clearfix col-lg-12">
-
-
-						                <ul class="sf-menu clearfix menu-content sf-js-enabled">
-
-						                    <li class="">
-								                                               <span>
-								                                                   <!-- <span class="menu-img"></span> -->
-
-								                                                   <span><span><img class="social"
-						                                                                            src="http://localhost/prestashop_1.6.1.6_es/prestashop/themes/rem-theme/img//social.png"></span></span>
+                                    <div class="sf-contener clearfix col-lg-12">
 
 
-								                                               </span>
-
-						                        <ul style="display: none;" class="submenu-container clearfix first-in-line-xs">
-						                            <li><span class="r-caret-up-menu-share"></span></li>
-						                            <li>
-						                                <ul style="display: none;">
-						                                    <li class="social-sharing"
-						                                        data-sharing-image="http://localhost/prestashop_1.6.1.6_es/prestashop/8-home_default/printed-dress.jpg"
-						                                        data-sharing-name="Printed Dress"
-						                                        data-sharing_url="http://localhost/prestashop_1.6.1.6_es/prestashop/casual-dresses/3-printed-dress.html"
-						                                        data-type="pinterest">
-						                                        <a href="javascript:">
-						                                            <i class="icon-pinterest"></i>
-						                                            Pinterest
-						                                        </a>
-						                                    </li>
-						                                    <li class="social-sharing" data-sharing-name="Printed Dress"
-						                                        data-sharing_url="http://localhost/prestashop_1.6.1.6_es/prestashop/casual-dresses/3-printed-dress.html"
-						                                        data-type="google-plus">
-						                                        <a href="javascript:">
-						                                            <i class="icon-google-plus"></i>
-						                                            Google+
-						                                        </a>
-						                                    </li>
-						                                    <li class="social-sharing" data-sharing-name="Printed Dress"
-						                                        data-sharing_url="http://localhost/prestashop_1.6.1.6_es/prestashop/casual-dresses/3-printed-dress.html"
-						                                        data-type="facebook">
-						                                        <a href="javascript:">
-						                                            <i class="icon-facebook"></i>
-						                                            Share
-						                                        </a>
-						                                    </li>
-						                                    <li class="social-sharing" data-sharing-name="Printed Dress"
-						                                        data-sharing_url="http://localhost/prestashop_1.6.1.6_es/prestashop/casual-dresses/3-printed-dress.html"
-						                                        data-type="twitter">
-						                                        <a href="javascript:">
-						                                            <i class="icon-twitter"></i>
-						                                            Tweet
-						                                        </a>
-						                                    </li>
+                                    <div class="sf-contener clearfix col-lg-12">
 
 
-						                                </ul>
-						                            </li>
+                                        <ul class="sf-menu clearfix menu-content sf-arrows">
+
+                                            <li class="">
+                                                       <span>
+                                                           <!-- <span class="menu-img"></span> -->
+
+                                                           <span><span><img class="social" src="{$img_dir}/social.png" /></span></span>
 
 
-						                        </ul>
-						                    </li>
+                                                       </span>
+
+                                                <ul style="display: none;" class="submenu-container clearfix first-in-line-xs">
+                                                    <li><span class="r-caret-up-menu-share"></span></li>
+                                                    <li><ul>
+                                                            <li class="social-sharing" data-sharing-image="{$link->getImageLink($product.link_rewrite, $product.id_image, 'home_default')|escape:'html':'UTF-8'}" data-sharing-name="{$product.name}" data-sharing_url="{$product.link|escape:'html'}" data-type="pinterest">
+                                                                <a href="javascript:;">
+                                                                    <i class="icon-pinterest"></i>
+                                                                    {l s="Pinterest" mod='socialsharing'}
+                                                                </a>
+                                                            </li>
+                                                            <li class="social-sharing" data-sharing-name="{$product.name}" data-sharing_url="{$product.link|escape:'html'}" data-type="google-plus">
+                                                                <a href="javascript:;">
+                                                                    <i class="icon-google-plus"></i>
+                                                                    {l s="Google+" mod='socialsharing'}
+                                                                </a>
+                                                            </li>
+                                                            <li class="social-sharing" data-sharing-name="{$product.name}" data-sharing_url="{$product.link|escape:'html'}" data-type="facebook">
+                                                                <a href="javascript:;">
+                                                                    <i class="icon-facebook"></i>
+                                                                    {l s="Share" mod='socialsharing'}
+                                                                </a>
+                                                            </li>
+                                                            <li class="social-sharing" data-sharing-name="{$product.name}" data-sharing_url="{$product.link|escape:'html'}" data-type="twitter">
+                                                                <a href="javascript:;">
+                                                                    <i class="icon-twitter"></i>
+                                                                    {l s="Tweet" mod='socialsharing'}
+                                                                </a>
+                                                            </li>
 
 
-						                </ul>
-						            </div>
 
 
-						        </div>
+
+                                                        </ul></li>
+
+
+                                                </ul>
+                                            </li>
+
+
+                                        </ul>
+                                    </div>
+                                    </div>
+
+
+                                </div> 
 
 						        <div class="content_price">
 																							

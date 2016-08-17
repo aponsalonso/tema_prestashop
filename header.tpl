@@ -66,6 +66,7 @@
 		{/if}
 		{$HOOK_HEADER}
 		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300,600&amp;subset=latin,latin-ext" type="text/css" media="all" />
+        <link rel="stylesheet" href="{$css_dir}product_list.css" type="text/css" media="all" />
         <link rel="stylesheet" type="text/css" href="{$css_dir}slick.css">
         <link rel="stylesheet" type="text/css" href="{$css_dir}slick-theme.css">        
 		<!--[if IE 8]>
@@ -84,7 +85,7 @@
 		{/if}
 		<div id="page">
 			<div class="header-container">
-				<header id="header">
+				<header id="header" {if !$cookie->isLogged()}style="padding:0px;"{/if} >
 					<div class="rem-header">
 
                         
@@ -101,7 +102,7 @@
                                 <div class="header_shop_name col-sm-4">
                                 <!-- {$shop_name} -->
                                 	<span>
-                                	TU PLANETA AZUL 
+                                	<!-- TU PLANETA AZUL  -->
                                 	</span>
                                 </div>
                                 <div class="header_user_menu col-sm-3 col-xs-12">
@@ -114,7 +115,7 @@
                                             <li class="">
                                                <span> <span>
                                                		{if $is_logged}
-                                                    <a href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}" title="{l s='Manage my customer account' mod='blockmyaccountfooter'}" rel="nofollow">
+                                                    <a href="#" title="{l s='Manage my customer account' mod='blockmyaccountfooter'}" rel="nofollow">
                                                     {else}
                                                     <a href="{$base_dir}login" title="{l s='Manage my customer account' mod='blockmyaccountfooter'}" rel="nofollow">
                                                     {/if}
@@ -144,12 +145,6 @@
 
                                                             <li><a href="#" title="{l s='Settings' mod='blockmyaccountfooter'}" rel="nofollow">{l s='Settings' mod='blockmyaccountfooter'}</a></li>
 
-<!--                                                             {if $returnAllowed}<li><a href="{$link->getPageLink('order-follow', true)|escape:'html':'UTF-8'}" title="{l s='My merchandise returns' mod='blockmyaccountfooter'}" rel="nofollow">{l s='My merchandise returns' mod='blockmyaccountfooter'}</a></li>{/if}
-                                                            <li><a href="{$link->getPageLink('order-slip', true)|escape:'html':'UTF-8'}" title="{l s='My credit slips' mod='blockmyaccountfooter'}" rel="nofollow">{l s='My credit slips' mod='blockmyaccountfooter'}</a></li>
-                                                            
-
-                                                            <li><a href="{$link->getPageLink('order-slip', true)|escape:'html':'UTF-8'}" title="{l s='Stadistic' mod='blockmyaccountfooter'}" rel="nofollow">{l s='Stadistic' mod='blockmyaccountfooter'}</a></li>  -->
-
                                                            {$HOOK_BLOCK_MY_ACCOUNT}
                                                             {if $is_logged}<li><a href="{$link->getPageLink('index')}?mylogout" title="{l s='Sign out' mod='blockmyaccountfooter'}" rel="nofollow">{l s='Sign out' mod='blockmyaccountfooter'}</a></li>{/if}
 
@@ -176,20 +171,9 @@
 
                                                             <li><a href="#" title="{l s='Statistics' mod='blockmyaccountfooter'}" rel="nofollow">{l s='Statistics' mod='blockmyaccountfooter'}</a></li>
 
-                                                            <li><a href="{$base_uri}marketplace/productlist" title="{l s='Product list' mod='blockmyaccountfooter'}" rel="nofollow">{l s='Product list' mod='blockmyaccountfooter'}</a></li>
+                                                            <li><a href="{$base_uri}module/marketplace/addproduct" title="{l s='New product'}" rel="nofollow">{l s='New product' }</a></li>
 
-<!--                                                             <li><a href="{$link->getPageLink('history', true)|escape:'html':'UTF-8'}" title="{l s='Hystory' mod='blockmyaccountfooter'}" rel="nofollow">{l s='History' mod='blockmyaccountfooter'}</a></li>
 
-                                                            {if $returnAllowed}<li><a href="{$link->getPageLink('order-follow', true)|escape:'html':'UTF-8'}" title="{l s='My merchandise returns' mod='blockmyaccountfooter'}" rel="nofollow">{l s='My merchandise returns' mod='blockmyaccountfooter'}</a></li>{/if}
-                                                            <li><a href="{$link->getPageLink('order-slip', true)|escape:'html':'UTF-8'}" title="{l s='My credit slips' mod='blockmyaccountfooter'}" rel="nofollow">{l s='My credit slips' mod='blockmyaccountfooter'}</a></li>
-                                                            
-
-                                                            <li><a href="{$link->getPageLink('order-slip', true)|escape:'html':'UTF-8'}" title="{l s='Stadistic' mod='blockmyaccountfooter'}" rel="nofollow">{l s='Stadistic' mod='blockmyaccountfooter'}</a></li> -->
-
-<!--                                                        
-     <li><a href="{$link->getPageLink('addresses', true)|escape:'html':'UTF-8'}" title="{l s='My addresses' mod='blockmyaccountfooter'}" rel="nofollow">{l s='My addresses' mod='blockmyaccountfooter'}</a></li>
- -->
- 
                                                            {$HOOK_BLOCK_MY_ACCOUNT}
                                                             {if $is_logged}<li><a href="{$link->getPageLink('index')}?mylogout" title="{l s='Sign out' mod='blockmyaccountfooter'}" rel="nofollow">{l s='Sign out' mod='blockmyaccountfooter'}</a></li>{/if}
 
@@ -218,15 +202,15 @@
                     {if $page_name =='index' && !$cookie->isLogged()}
                     <div class="seller_profile_header" style="background-color: black;margin-top: -51px; background-image: url({$img_dir}header.png);height: 150px;"></div>
                         <div style="text-align: center;">
-                            
+                            <!-- TITULO -->
                         </div>
                     {/if}
-                    {if isset($mp_seller_info['id']) && !isset($product)}
+                    {if (isset($mp_seller_info['id']) && !isset($product)) || (in_array($page_name,$pages))}
                     <div class="seller_profile_header" style="background-color: black;margin-top: -51px;">
                     {else}
                     <div class="seller_profile_header">
                     {/if}
-                        {if isset($mp_seller_info['id']) && !isset($product)}
+                        {if (isset($mp_seller_info['id']) && !isset($product)) || (in_array($page_name,$pages))}
 
                             <div style="height: 320px;">
 
@@ -250,39 +234,389 @@
                         {/if}
                     </div>
 
-                    <div class="seller_header">
-                        {if isset($mp_seller_info['id']) && !isset($product)}
-                        <div >
-                            <h1>{$name_shop}</h1>
-                            <h2>{$cookie->customer_firstname} {$cookie->customer_lastname}</h2>
+                                    {if !$is_logged && $page_name=='index'}
+                                    <div class="title_home">
+                                        COMUNIDAD AZUL
+                                    </div>
+                                    {/if}
+
+                    {if (isset($mp_seller_info['id']) && !isset($product)) || (in_array($page_name,$pages))}
+                    {if in_array($page_name,$pages)}
+                    <div class="seller_header" >
+                        <div  style="border:  1px solid white;">
+                            <h1>{include file="$tpl_dir./$page_name.title.tpl"}</h1>
                         </div>
-                        {/if}
+                    </div>                    
+                    {/if}
+                    {if !in_array($page_name,$pages)}
+                    <div class="seller_header">
+                        <div>
+                            <h1>{$mp_seller_info['shop_name']}</h1>
+                            <h2>{$mp_seller_info['seller_name']}</h2>
+                        </div>
                     </div>
+                    <div style="float: right; margin-right: 100px;margin-top: 50px;">
+                        <span style="float: left; width:40px;margin-top: 5px;"><p
+                                class="buttons_bottom_block no-print">
+                            <a id="wishlist_button_nopop" href="#"
+                               onclick="WishlistCart('wishlist_block_list', 'add', '3', $('#idCombination').val(), 1); return false;"
+                               rel="nofollow" title="Add to my wishlist">
+                                <img src="{$img_dir}/social2.png">
+                            </a>
+                        </p>
+                        </span>                        
+                    </div>
+                    <div style="float: right;width: 10px;margin-right: -50px;margin-top: 50px;">
+                                <div class="r_product_share_menu col-sm-2">
+
+                                    <div class="sf-contener clearfix col-lg-12">
+
+
+                                    <div class="sf-contener clearfix col-lg-12">
+
+
+                                        <ul class="sf-menu clearfix menu-content sf-arrows">
+
+                                            <li class="">
+                                                       <span>
+                                                           <!-- <span class="menu-img"></span> -->
+
+                                                           <span><span><img class="" src="{$img_dir}/social.png" /></span></span>
+
+
+                                                       </span>
+
+                                                <ul style="display: none;" class="submenu-container clearfix first-in-line-xs">
+                                                    <li><span class="r-caret-up-menu-share"></span></li>
+                                                    <li><ul>
+                                                            <li class="social-sharing" data-sharing-image="{$link->getImageLink($product.link_rewrite, $product.id_image, 'home_default')|escape:'html':'UTF-8'}" data-sharing-name="{$product.name}" data-sharing_url="{$product.link|escape:'html'}" data-type="pinterest">
+                                                                <a href="javascript:;">
+                                                                    <i class="icon-pinterest"></i>
+                                                                    {l s="Pinterest" mod='socialsharing'}
+                                                                </a>
+                                                            </li>
+                                                            <li class="social-sharing" data-sharing-name="{$product.name}" data-sharing_url="{$product.link|escape:'html'}" data-type="google-plus">
+                                                                <a href="javascript:;">
+                                                                    <i class="icon-google-plus"></i>
+                                                                    {l s="Google+" mod='socialsharing'}
+                                                                </a>
+                                                            </li>
+                                                            <li class="social-sharing" data-sharing-name="{$product.name}" data-sharing_url="{$product.link|escape:'html'}" data-type="facebook">
+                                                                <a href="javascript:;">
+                                                                    <i class="icon-facebook"></i>
+                                                                    {l s="Share" mod='socialsharing'}
+                                                                </a>
+                                                            </li>
+                                                            <li class="social-sharing" data-sharing-name="{$product.name}" data-sharing_url="{$product.link|escape:'html'}" data-type="twitter">
+                                                                <a href="javascript:;">
+                                                                    <i class="icon-twitter"></i>
+                                                                    {l s="Tweet" mod='socialsharing'}
+                                                                </a>
+                                                            </li>
+
+
+
+
+
+                                                        </ul></li>
+
+
+                                                </ul>
+                                            </li>
+
+
+                                        </ul>
+                                    </div>
+                                    </div>
+
+
+                                </div>                      
+                    </div>
+                    {/if}
 
                     <div class="seller_image">
-                        {if isset($mp_seller_info['id']) && !isset($product)}
                         {if isset($seller_img_path)}
                             <img class="seller_img" src="{$seller_img_path|escape:'html':'UTF-8'}" alt="Seller Image" style="border-radius: 20px;" />
                         {else}
                             <img class="seller_img" src="{$modules_dir|escape:'htmlall':'UTF-8'}marketplace/views/img/seller_img/defaultimage.jpg" alt
 ="Default Image" style="border-radius: 20px;'" />
                         {/if}                            
-                        {/if}
+                    </div>
+
+                    <div class="edit">
+                        <a {if !$profile && !in_array($page_name,$pages)} {else} style="visibility: hidden;;" {/if}href="{$base_uri}module/marketplace/editprofile?edit=true"><img src="{$img_dir}edit.png" /></a>
                     </div>
 
                     <div class="col-ms-2 col-xs-2 col-lg-2">
                     
                     </div>
                     <div class="col-ms-10 col-xs-10 col-lg-10">
-                    {if isset($mp_seller_info['id']) && !isset($product)}
-                        {$mp_seller_info['about_shop']}
-                    {/if}    
+                        <div style="margin: -20px 45px 0px 45px;">
+                        {if isset($mp_seller_info['id']) && !isset($product) && !$edit}
+                            {html_entity_decode($mp_seller_info['about_shop'])}
+                        {/if}    
+                        </div>
                     </div>
+            
+                    <div class="col-ms-2 col-xs-2 col-lg-2">
+
+                        <div class="social-icons">
+                            Social Networks  
+                        </div>
+                        <div class="social-icons">
+                            <img src="{$img_dir}facebook.png" />
+                            <img src="{$img_dir}social3.png" />
+                            <img src="{$img_dir}twitter.png" />
+                            <img src="{$img_dir}pinterest.png" />
+                        </div>
+                    
+                        <br />
+
+                        <div class="social-icons">
+                            Prix
+                        </div>
+                        <div class="social-icons">
+                            <img class="rate" src="{$img_dir}mandala-color.jpg" />
+                            <img class="rate" src="{$img_dir}mandala-color.jpg" />
+                            <img class="rate" src="{$img_dir}mandala-color.jpg" />
+                            <img class="rate" src="{$img_dir}mandala-color.jpg" />
+                        </div>
+
+                        <div class="social-icons">
+                            Qualited
+                        </div>
+                        <div class="social-icons">
+                            <img class="rate" src="{$img_dir}mandala-color.jpg" />
+                            <img class="rate" src="{$img_dir}mandala-color.jpg" />
+                            <img class="rate" src="{$img_dir}mandala-color.jpg" />
+                            <img class="rate" src="{$img_dir}mandala-color.jpg" />
+                        </div>
+
+                    </div> 
+
+                    {if ( !$edit && !in_array($page_name,$pages) )}
+                    <div class="col-ms-12 col-xs-12 col-lg-12" style="margin-top: 200px;">
+                        <section class="variable slider">
+
+                            {foreach from=$products_seller item=product name=products}
+                            <div>
+                              
+                                <div class="tab-content">   
+                                            <!-- Products list -->
+                                                <ul id="blocknewproducts" class="col-xs-3 col-sm-3 col-md-3 product_list grid row blocknewproducts tab-pane active">
+                                                
+                                                    <li class="ajax_block_product col-xs-12 col-sm-12 col-md-12 first-in-line first-item-of-tablet-line first-item-of-mobile-line" style="height: 400px; margin-bottom: 0px;">
+                                                    <div class="col-ms-12 col-xs-12 col-lg-12" style="position: absolute; z-index: 9999; left:-10px; top: 10px;">
+                                                        {if !$profile}
+                                                        <a href="{$base_uri}module/marketplace/productupdate?id={$product.id}&editproduct=1"><img style="width:auto !important;margin: auto;float: right;" src="{$img_dir}edit.png" /></a>
+                                                        {/if}
+                                                    </div>                                                                                                                
+                                                    <div class="product-container" itemscope="" itemtype="https://schema.org/Product">
+                                                        <div class="left-block" style="background-image: url({$product.logo})">
+
+                                                            <div class="product-image-container">
+                                                                <a class="product_img_link" href="#" title="Producrto D" itemprop="url">
+                                                                    <img style="visibility: hidden;" class="replace-2x img-responsive" src="{$product.logo}" alt="Producrto D" title="Producrto D" width="250" height="250" itemprop="image">
+                                                                </a>
+                                                                                                    <div class="quick-view-wrapper-mobile">
+                                                                    <a class="quick-view-mobile" href="#" rel="#">
+                                                                        <i class="icon-eye-open"></i>
+                                                                    </a>
+                                                                </div>
+                                                                <a class="quick-view" href="#" rel="#">
+                                                                    <span>Quick view</span>
+                                                                </a>
+                                                                                                                                    <div class="content_price" itemprop="offers" itemscope="" itemtype="https://schema.org/Offer">
+                                                                                                                    <span itemprop="price" class="price product-price">
+                                                                                
+                                                                                {$product.price}
+                                                                                                                          </span>
+                                                                            <meta itemprop="priceCurrency" content="USD">
+                                                                                                                                                                        <span class="unvisible">
+                                                                                                                                                <link itemprop="availability" href="https://schema.org/InStock">In Stock                                                                                                    </span>
+                                                                                                                        
+                                                                            
+                                                                                                            </div>
+                                                                                                                                    <a class="new-box" href="http://localhost/prestashop_1.6.1.6_es/prestashop/home/14-producrto-d.html">
+                                                                        <span class="new-label">New</span>
+                                                                    </a>
+                                                                                                                            </div>
+                                                                                        
+                                                        </div>
+                                                        <div class="right-block margin-top-0">
+                                                            <h5 itemprop="name">
+                                <a class="product-name" href="{$product.link|escape:'html':'UTF-8'}" title="{$product.name|escape:'html':'UTF-8'}" itemprop="url" >
+                                    {$product.product_name|truncate:45:'...'|escape:'html':'UTF-8'}
+                                </a>
+                                                                                            </h5>
+                                                                                                                    <p class="product-desc" itemprop="description">
+                                                                sadfasdf
+                                                            </p>
+                                                                                    
+                                                            <div>
+                                                                <div class="col-sm-2 leftl10">
+                                                                    <span style="float: left; width:40px;margin-top: 5px;"><p class="buttons_bottom_block no-print">
+                                                                        <a id="wishlist_button_nopop" href="#" onclick="WishlistCart('wishlist_block_list', 'add', '3', $('#idCombination').val(), 1); return false;" rel="nofollow" title="Add to my wishlist">
+                                                                            <img class="social2" src="http://localhost/prestashop_1.6.1.6_es/prestashop/themes/rem-theme/img//social2.png" style="margin-left:10px;">
+                                                                        </a>
+                                                                    </p>
+                                                                    </span>                 
+                                                                </div>  
+
+                                                                <div class="r_product_share_menu col-sm-2">
+
+                                                                    <div class="sf-contener clearfix col-lg-12">
+
+
+                                                                        <ul class="sf-menu clearfix menu-content sf-arrows">    
+
+                                                                            <li class="">
+                                                                                       <span>
+                                                                                           <!-- <span class="menu-img"></span> -->
+
+                                                                                           <span><span><img class="social" style="margin-left:10px;" src="{$img_dir}/social.png"></span></span>
+                                                                                       </span>
+
+                                                                                <ul style="display: none;" class="submenu-container clearfix first-in-line-xs">
+                                                                                    <li><span class="r-caret-up-menu-share"></span></li>
+                                                                                    <li><ul style="display: none;">
+                                                                                            <li class="social-sharing" data-sharing-image="http://localhost/prestashop_1.6.1.6_es/prestashop/33-home_default/producrto-d.jpg" data-sharing-name="Producrto D" data-sharing_url="http://localhost/prestashop_1.6.1.6_es/prestashop/home/14-producrto-d.html" data-type="pinterest">
+                                                                                                <a href="javascript:;">
+                                                                                                    <i class="icon-pinterest"></i>
+                                                                                                    Pinterest
+                                                                                                </a>
+                                                                                            </li>
+                                                                                            <li class="social-sharing" data-sharing-name="Producrto D" data-sharing_url="http://localhost/prestashop_1.6.1.6_es/prestashop/home/14-producrto-d.html" data-type="google-plus">
+                                                                                                <a href="javascript:;">
+                                                                                                    <i class="icon-google-plus"></i>
+                                                                                                    Google+
+                                                                                                </a>
+                                                                                            </li>
+                                                                                            <li class="social-sharing" data-sharing-name="Producrto D" data-sharing_url="http://localhost/prestashop_1.6.1.6_es/prestashop/home/14-producrto-d.html" data-type="facebook">
+                                                                                                <a href="javascript:;">
+                                                                                                    <i class="icon-facebook"></i>
+                                                                                                    Share
+                                                                                                </a>
+                                                                                            </li>
+                                                                                            <li class="social-sharing" data-sharing-name="Producrto D" data-sharing_url="http://localhost/prestashop_1.6.1.6_es/prestashop/home/14-producrto-d.html" data-type="twitter">
+                                                                                                <a href="javascript:;">
+                                                                                                    <i class="icon-twitter"></i>
+                                                                                                    Tweet
+                                                                                                </a>
+                                                                                            </li>
+
+
+
+
+
+                                                                                        </ul></li>
+
+
+                                                                                </ul>
+                                                                            </li>
+
+
+                                                                        </ul>
+                                                                    </div>
+
+
+                                                                </div>
+
+                                                                <div class="content_price">
+                                                                                                    
+                                                                    <span class="price product-price">
+                                                                        {$price}                                   </span>
+                                                                                                        
+                                                                    
+                                                                    
+                                                                                            </div>
+
+                                                            <div class="car_and_supplier">
+                                                                <div class="r-seller-link" style="margin-top:6px; color:#ab9898;">
+
+                                                                    {$mp_seller_info['seller_name']}
+                                                                    
+                                                                </div>
+
+                                                                      
+                                                                            <span style="visibility: hidden;" class="product-cart"></span>
+                                                                        </a>
+                                                                                                                                </div>
+                                                                                        <div class="button-container" style="display: none;">
+
+                                                                <a class="button lnk_view btn btn-default" href="http://localhost/prestashop_1.6.1.6_es/prestashop/home/14-producrto-d.html" title="View">
+                                                                    <span>More</span>
+                                                                </a>
+                                                            </div>
+                                                                                        <div class="product-flags">
+                                                                                                                                                                                                </div>
+                                                                                                                                <span class="availability">
+                                                                                                                   
+                                                                                                            </span>
+                                                                                                                    </div>
+                                                                            </div><!-- .product-container> -->
+                                                </div></li>
+                                                
+                                                                        
+                                                                    </ul>
+                                        
+                                                <script>
+                                            $(document).ready(function(){
+                                                $('li.social-sharing').on('click', function(){
+                                                    type = $(this).attr('data-type');
+                                                    sharing_name = $(this).attr('data-sharing-name');
+                                                    sharing_url = $(this).attr('data-sharing_url');
+                                                    if (type.length)
+                                                    {
+                                                        switch(type)
+                                                        {
+                                                            case 'twitter':
+                                                                window.open('https://twitter.com/intent/tweet?text=' + sharing_name + ' ' + sharing_url, 'sharertwt', 'toolbar=0,status=0,width=640,height=445');
+                                                                break;
+                                                            case 'facebook':
+                                                                window.open('http://www.facebook.com/sharer.php?u=' + sharing_url, 'sharer', 'toolbar=0,status=0,width=660,height=445');
+                                                                break;
+                                                            case 'google-plus':
+                                                                window.open('https://plus.google.com/share?url=' + sharing_url, 'sharer', 'toolbar=0,status=0,width=660,height=445');
+                                                                break;
+                                                            case 'pinterest':
+                                                                var img_url = $(this).attr('data-sharing-image');
+                                                                if (typeof $("#bigpic").attr('src') != 'undefined' && $("#bigpic").attr('src') != '') {
+                                                                    img_url = $("#bigpic").attr('src');
+                                                                }
+                                                                window.open('http://www.pinterest.com/pin/create/button/?media=' + img_url + '&url=' + sharing_url, 'sharerpinterest', 'toolbar=0,status=0,width=660,height=445');
+                                                                break;
+                                                        }
+                                                    }
+                                                });
+                                            });
+
+                                            $('#blockbestsellers').hide();
+                                        </script>
+                                        
+
+                                </div>
+
+
+
+                            </div>
+                            {/foreach}
+
+                        </section> 
+                    </div>
+                    {/if}
+                {/if}
 
                 </header>
 
-			<div class="columns-container">
-				<div id="columns" class="container" {if $page_name=='index' && !$cookie->isLogged()} style="padding-top:0px;margin-top:-25px;" {/if} >
+            {if ( $edit || in_array($page_name,$pages) )}
+                <div class="col-ms-2 col-xs-2 col-lg-2"></div>
+                <div class="col-ms-10 col-xs-10 col-lg-10">
+            {/if}    
+            <div class="columns-container">
+                <div id="columns" class="container" {if $page_name=='index' && !$cookie->isLogged()} style="padding-top:0px;margin-top:-35px;" {/if} >
+
+
 					{if $page_name !='index' && $page_name !='pagenotfound' && !$in_seller_profile}
 						{include file="$tpl_dir./breadcrumb.tpl"}
 					{/if}
@@ -301,12 +635,46 @@
 						{if isset($left_column_size) && isset($right_column_size)}{assign var='cols' value=(12 - $left_column_size - $right_column_size)}{else}{assign var='cols' value=12}{/if}
 						<div id="center_column" class="center_column col-xs-12 col-sm-{$cols|intval}">
 	{/if}
-	<script type="text/javascript">
-		$(document).ready(function(){
+
+  <script src="{$js_dir}jquery-2.1.4.min.js" type="text/javascript"></script>  
+  <script src="{$js_dir}slick.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript">
+    $(document).on('ready', function() {
+      $(".regular").slick({
+        dots: true,
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 3
+      });
+      $(".center").slick({
+        dots: false,
+        infinite: true,
+        centerMode: false,
+        slidesToShow: 4,
+        slidesToScroll: 3
+      });
+      $(".variable").slick({
+        dots: false,
+        infinite: false,
+        variableWidth: true,
+        arrows: true,
+
+          nextArrow: '<img src="{$img_dir}d.png" class="slick-next slick-arrow slick-disabled" aria-label="Previous" role="button" aria-disabled="true" />',
+          prevArrow: '<img src="{$img_dir}i.png" data-role="none" class="slick-prev slick-arrow slick-disabled" aria-label="Previous" role="button" aria-disabled="true"/>'
+
+  // nextArrow: '<button type="button" data-role="none" class="slick-next slick-arrow slick-disabled" aria-label="Previous" role="button" aria-disabled="true" style="display: block;color:black; background-color:black;">Next</button>',
+  // prevArrow: '<button type="button" data-role="none" class="slick-prev slick-arrow slick-disabled" aria-label="Previous" role="button" aria-disabled="true" style="display: block;color:black; background-color:black;">Previous</button>'       
+      });
+    });
+  </script>
+    <script type="text/javascript">
+        $(document).ready(function(){
             $('#block_top_right_menu > ul > li > ul').css('left','150px');
+            $('#blocknewproducts').show();
+            $('.slider').css('width','100% !important');
             {if isset($mp_seller_info['id'])}
-            $('.columns-container').css('display','none');  
+            //$('.columns-container').css('display','none');  
+            $('.slick-dots').hide();
             {/if}
-		})
-	</script>
-  
+        })
+    </script>

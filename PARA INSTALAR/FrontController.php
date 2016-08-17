@@ -1008,6 +1008,48 @@ class FrontControllerCore extends Controller
             $product_seller[ $value['name'] ][1] = $value['seller_name'];
         }
 
+        if (!empty($this->page_name)) {
+            $page_name = $this->page_name;
+        } elseif (!empty($this->php_self)) {
+            $page_name = $this->php_self;
+        } elseif (Tools::getValue('fc') == 'module' && $module_name != '' && (Module::getInstanceByName($module_name) instanceof PaymentModule)) {
+            $page_name = 'module-payment-submit';
+        }
+        // @retrocompatibility Are we in a module ?
+        elseif (preg_match('#^'.preg_quote($this->context->shop->physical_uri, '#').'modules/([a-zA-Z0-9_-]+?)/(.*)$#', $_SERVER['REQUEST_URI'], $m)) {
+            $page_name = 'module-'.$m[1].'-'.str_replace(array('.php', '/'), array('', '-'), $m[2]);
+        } else {
+            $page_name = Dispatcher::getInstance()->getController();
+            $page_name = (preg_match('/^[0-9]/', $page_name) ? 'page_'.$page_name : $page_name);
+        }
+// echo $page_name;exit;
+        $products_seller = [];
+        if ( !in_array($page_name, ['my-account','module-blockwishlist-mywishlist','pagenotfound','history','module-marketplace-mppayment','module-marketplace-addproduct'] ))
+        {
+
+            $idseller = Db::getInstance()->executeS('select marketplace_seller_id FROM '._DB_PREFIX_.'marketplace_customer where id_customer='.(int)$this->context->customer->id);
+
+            $sql = 'SELECT * FROM `'._DB_PREFIX_.'marketplace_seller_product` WHERE `id_seller` = '.(isset($_GET['j']) ? $_GET['j'] : $idseller[0]['marketplace_seller_id']);
+
+            if ($active)
+                $sql .= ' AND `active` = 1';
+
+            $mp_products = Db::getInstance()->executeS($sql);
+
+            foreach ($mp_products as $key => $value) {
+
+                $idimage = Db::getInstance()->executeS('SELECT '._DB_PREFIX_.'product_lang.id_product FROM '._DB_PREFIX_.'product_lang WHERE '._DB_PREFIX_.'product_lang.name = \''. $value['product_name']."'");
+
+                $image = Image::getCover($idimage[0]['id_product']);
+                $imagePath = Link::getImageLink($product->link_rewrite, $image['id_image'], 'home_default'); 
+
+                $mp_products[$key]['logo'] = $imagePath;
+            }
+
+            if ($mp_products && !empty($mp_products))
+                $products_seller = $mp_products;
+        }
+
         // Hooks are voluntary out the initialize array (need those variables already assigned)
         $this->context->smarty->assign(array(
             'time'                  => time(),
@@ -1019,7 +1061,12 @@ class FrontControllerCore extends Controller
             'groups'                => Customer::getDefaultGroupId((int)$this->context->customer->id),
             'sellers'               => $this->findAllActiveSeller(),
             'seller_product'        => $product_seller,
-            'logos'                 => _MODULE_DIR_.'marketplace/views/img/shop_img/'
+            'logos'                 => _MODULE_DIR_.'marketplace/views/img/shop_img/',
+            'products_seller'       => $products_seller,
+            'profile'               => isset($_GET['j']) || isset($_GET['i']),
+            'edit'                  => isset($_GET['edit']) && $this->context->customer->isLogged(),
+            'product_seller'        => isset($_GET['edit']) || isset($_GET['j']) || isset($_GET['i']),
+            'pages'                 => ['productlist','module-marketplace-mporder','module-marketplace-productlist','history','module-marketplace-productupdate','module-blockwishlist-mywishlist','module-marketplace-addproduct']
         ));
 
         $this->context->smarty->assign($this->initLogoAndFavicon());
@@ -1699,7 +1746,7 @@ class FrontControllerCore extends Controller
 
     private function findAllActiveSeller()
     {
-        $seller_info = Db::getInstance()->executeS("SELECT mpsi.* FROM `"._DB_PREFIX_."marketplace_seller_info` mpsi
+        $seller_info = Db::getInstance()->executeS("SELECT mpsi.*, mpc.id_customer FROM `"._DB_PREFIX_."marketplace_seller_info` mpsi
                                 LEFT JOIN `"._DB_PREFIX_."marketplace_customer` mpc
                                 ON (mpsi.`id` = mpc.`marketplace_seller_id`) WHERE mpc.`is_seller` = 1");
 
@@ -1710,6 +1757,7 @@ class FrontControllerCore extends Controller
             $seller_info[$key]['logo'] = file_exists( $base_uri."modules/marketplace/views/img/seller_img/".$value['id'].".jpg" ) ?
                                                    $base_uri."modules/marketplace/views/img/seller_img/".$value['id'].".jpg" :
                                                    $base_uri."modules/marketplace/views/img/seller_img/defaultimage.jpg";
+        
 
         return $seller_info;
     }    

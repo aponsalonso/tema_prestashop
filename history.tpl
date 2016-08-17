@@ -30,8 +30,6 @@
 	<span class="navigation_page">{l s='Order history'}</span>
 {/capture}
 {include file="$tpl_dir./errors.tpl"}
-<h1 class="page-heading bottom-indent">{l s='Order history'}</h1>
-<p class="info-title">{l s='Here are the orders you\'ve placed since your account was created.'}</p>
 {if $slowValidation}
 	<p class="alert alert-warning">{l s='If you have just placed an order, it may take a few minutes for it to be validated. Please refresh this page if your order is missing.'}</p>
 {/if}
@@ -112,7 +110,7 @@
 </div>
 <ul class="footer_links clearfix">
 	<li>
-		<a class="btn btn-default button button-small" href="{$link->getPageLink('my-account', true)|escape:'html':'UTF-8'}">
+		<a class="btn btn-default button button-small" href="{$base_dir}module/marketplace/editprofile">
 			<span>
 				<i class="icon-chevron-left"></i> {l s='Back to Your Account'}
 			</span>
